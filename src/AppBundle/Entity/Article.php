@@ -3,12 +3,33 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Hateoas\Configuration\Annotation as Hateoas;
 
 /**
  * Article
  *
  * @ORM\Table(name="article")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArticleRepository")
+ *
+ *
+ * @Hateoas\Relation(
+ *     "modify",
+ *     href=@Hateoas\Route( "article_edit", parameters = { "id" = "expr(object.getId())" }, absolute=true )
+ * )
+ *
+ * @Hateoas\Relation(
+ *     "delete",
+ *     href=@Hateoas\Route( "article_delete", parameters = { "id" = "expr(object.getId())" }, absolute=true )
+ * )
+ *
+ * @Hateoas\Relation(
+ *     "self",
+ *     href= @Hateoas\Route( "article_show", parameters = { "id" = "expr(object.getId())" }, absolute=true )
+ * )
+ * @Hateoas\Relation(
+ *     name = "Author",
+ *     embedded = @Hateoas\Embedded( "expr(object.getAuthor())" )
+ * )
  */
 class Article
 {
@@ -50,7 +71,7 @@ class Article
     private $createDate;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Author", inversedBy="articles")
+     * @ORM\ManyToOne(targetEntity="Author", inversedBy="articles", cascade={"all"})
      */
     private $author;
 

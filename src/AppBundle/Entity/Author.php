@@ -47,7 +47,7 @@ class Author
 
     /**
      * @Serializer\Exclude
-     * @ORM\OneToMany(targetEntity="Article", mappedBy="author")
+     * @ORM\OneToMany(targetEntity="Article", mappedBy="author", cascade={"persist"})
      */
     private $articles;
 
