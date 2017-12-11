@@ -4,6 +4,12 @@ parameters:
     #parameter_name: value
 
 services:
-    #service_name:
-    #    class: AppBundle\Directory\ClassName
-    #    arguments: ['@another_service_name', 'plain_value', '%parameter_name%']
+    api_key_user_provider:
+        class: AppBundle\Security\ApiKeyUserProvider
+        arguments:
+            em: @doctrine.orm.default_entity_manager
+
+    api_key_authenticator:
+        class: AppBundle\Security\ApiKeyAuthenticator
+        public: false
+

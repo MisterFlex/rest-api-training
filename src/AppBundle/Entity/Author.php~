@@ -4,14 +4,17 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Author
  *
  * @ORM\Table(name="author")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AuthorRepository")
+ *
  */
-class Author
+class Author implements UserInterface
 {
     /**
      * @var int
@@ -21,6 +24,24 @@ class Author
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var string
+     * @ORM\Column(name="username", type="string", length=255, unique=true)
+     */
+    private $username;
+
+    /**
+     * @var string
+     * @ORM\Column(name="password", type="string", length=255)
+     */
+    private $password;
+
+    /**
+     * @var array
+     * @ORM\Column(name="roles", type="array")
+     */
+    private $roles;
 
     /**
      * @var string
@@ -44,9 +65,11 @@ class Author
     private $profession;
 
     /**
-     * @ORM\OneToMany(targetEntity="Author", mappedBy="author")
+     * @Serializer\Exclude
+     * @ORM\OneToMany(targetEntity="Article", mappedBy="author", cascade={"persist"})
      */
     private $articles;
+
 
     public function __construct()
     {
@@ -130,5 +153,63 @@ class Author
     public function getProfession()
     {
         return $this->profession;
+    }
+
+    /**
+     * Add articles
+     *
+     * @param \AppBundle\Entity\Article $articles
+     * @return Author
+     */
+    public function addArticle(Article $articles)
+    {
+        $this->articles[] = $articles;
+
+        return $this;
+    }
+
+    /**
+     * Remove articles
+     *
+     * @param \AppBundle\Entity\Article $articles
+     */
+    public function removeArticle(Article $articles)
+    {
+        $this->articles->removeElement($articles);
+    }
+
+    /**
+     * Get articles
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getArticles()
+    {
+        return $this->articles;
+    }
+
+    public function getRoles()
+    {
+        // TODO: Implement getRoles() method.
+    }
+
+    public function getPassword()
+    {
+        // TODO: Implement getPassword() method.
+    }
+
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+
+    public function getUsername()
+    {
+        // TODO: Implement getUsername() method.
+    }
+
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
     }
 }

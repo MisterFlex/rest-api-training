@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Author
@@ -13,7 +14,7 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AuthorRepository")
  *
  */
-class Author
+class Author implements UserInterface
 {
     /**
      * @var int
@@ -23,6 +24,24 @@ class Author
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var string
+     * @ORM\Column(name="username", type="string", length=255, unique=true)
+     */
+    private $username;
+
+    /**
+     * @var string
+     * @ORM\Column(name="password", type="string", length=255)
+     */
+    private $password;
+
+    /**
+     * @var array
+     * @ORM\Column(name="roles", type="array")
+     */
+    private $roles;
 
     /**
      * @var string
@@ -55,6 +74,7 @@ class Author
     public function __construct()
     {
         $this->articles = new ArrayCollection();
+        $this->roles = "ROLE_AUTHOR";
     }
 
     /**
@@ -167,5 +187,72 @@ class Author
     public function getArticles()
     {
         return $this->articles;
+    }
+
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    public function getPassword()
+    {
+        return $this->getPassword();
+    }
+
+    public function getSalt()
+    {
+        return date("U");
+    }
+
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
+
+    /**
+     * Set username
+     *
+     * @param string $username
+     *
+     * @return Author
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     *
+     * @return Author
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Set roles
+     *
+     * @param array $roles
+     *
+     * @return Author
+     */
+    public function setRoles($roles)
+    {
+        $this->roles[] = $roles;
+
+        return $this;
     }
 }

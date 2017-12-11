@@ -11,3 +11,5 @@ services:
         arguments: [@jms_serializer]
         tags:
             - { name: kernel.event_subscriber }
+
+

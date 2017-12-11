@@ -23,7 +23,7 @@ class ArticleController extends FOSRestController
 {
     /**
      * @Rest\Get(
-     *     path="/articles",
+     *     path="/api/articles",
      *     name="article_list_all"
      * )
      * @QueryParam(
@@ -47,7 +47,7 @@ class ArticleController extends FOSRestController
 
     /**
      * @Rest\Post(
-     *     path="/articles",
+     *     path="/api/articles",
      *     name="filter_articles"
      * )
      * @QueryParam(
